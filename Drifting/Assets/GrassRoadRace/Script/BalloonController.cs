@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BalloonController : MonoBehaviour {
 
+    public GameObject Title;
+    public GameObject Win;
     public Slider myslider;
     public GameObject heart1;
     public GameObject heart2;
@@ -27,13 +29,22 @@ public class BalloonController : MonoBehaviour {
 
     private void Start()
     {
-        //transform.localPosition = new Vector3 ( 0, 2, 27 );-
-        transform.localPosition = new Vector3(0, 2, -185);
+        Win.SetActive(false);
+        transform.localPosition = new Vector3 ( 0, 2, 27 );
+        //transform.localPosition = new Vector3(0, 2, -185);
         Pos0 = transform.position;
         Rotx = transform.localRotation.x;
         Rotx = transform.localRotation.y;
         Rotx = transform.localRotation.z;
         Scale0 = transform.localScale;
+        StartCoroutine(Show());
+       
+    }
+
+    IEnumerator Show()
+    {
+        yield return new WaitForSeconds(3f);
+        Title.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -52,7 +63,9 @@ public class BalloonController : MonoBehaviour {
             MoveObj();
             StartCoroutine(Slow());
         }
-        
+        if (collision.gameObject.tag == "Finish" && life > 0) {
+            Win.SetActive(true);
+        }
     }
 
     private IEnumerator Slow()
